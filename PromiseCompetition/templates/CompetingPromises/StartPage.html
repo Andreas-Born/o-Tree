@@ -1,0 +1,46 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    Welcome to today's experiment!
+{% endblock %}
+
+{% block content %}
+
+    <p>
+    Thank you for your participation in this study. The study will take about 30 minutes and consists of two parts plus a short questionnaire.
+    </p>
+    <h5>Instructions</h5>
+    <p>
+        Please take as much time as needed to read and understand these instructions. Once you have read and understood the instructions you may begin with the experiment on the computer. Before you can start, the program will ask you a few control questions to make sure that you have understood everything properly. You will be able to proceed only after you answered all questions correctly.     </p>
+
+    <p>We kindly ask you not to communicate with other participants in the room as this is very important for the study. </p>
+    <p><i>Should you have a question now or at any time during the experiment, please raise your hand and the experimenter will come to you and answer your question privately.  </i> </p>
+
+    <h5>Payment</h5>
+    <p>
+    This experiment is divided into two parts which together consist of eleven rounds. In each round you will be able to earn up to 200 points based on your decisions as well as the decisions of other participants. In the end of the experiment one round will be chosen at random with equal probability. For each point you earned in that chosen round, you will receive 10 cents. In addition to these earnings everyone will receive a $10 participation fee.
+    </p>
+    <p>
+     The following describes the two parts of the experiment in detail.
+    </p>
+    {% next_button %}
+
+{% endblock %}

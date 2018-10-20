@@ -1,0 +1,155 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+
+    }
+    .formfield{
+        text-align: center;
+        margin: auto;
+        display: block;
+        width: 10%;
+    }
+    .wrapper {
+        width: 80%; /* Width of the outside container */
+        text-align: center;
+        margin: auto;
+        display: block;
+    }
+    #instructions{
+        display: none;
+        width: 100%;
+        border: none;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+        float: right
+    }
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #FFFFFF; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+        .slider::-webkit-slider-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+    .slider::-moz-range-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+    .results {
+        width: 100%;
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+
+    <script>
+        var treatment = {{ treatment | json }};
+        var round = {{ round | json }};
+        function toggleInstructions() {
+            // get the clock
+            var myClock = document.getElementById('instructions');
+
+            // get the current value of the clock's display property
+            var displaySetting = myClock.style.display;
+
+            // also get the clock button, so we can change what it says
+            var clockButton = document.getElementById('instructionButton');
+
+            // now toggle the clock and the button text, depending on current state
+            if (displaySetting == 'block') {
+              // clock is visible. hide it
+              myClock.style.display = 'none';
+              // change button text
+              clockButton.innerHTML = 'Instructions';
+            }
+            else {
+              // clock is hidden. show it
+              myClock.style.display = 'block';
+              // change button text
+              clockButton.innerHTML = 'Hide';
+            }
+      }
+
+
+        $(document).ready(function() {
+            if (treatment === 1){
+                document.getElementById("treatment").innerHTML = "B";
+                document.getElementById("treatment2").innerHTML = "B";
+                document.title = "Part B";
+                document.getElementById("thanks").innerHTML = "Thanks for your decisions in Part A. That part is now concluded."
+                /*document.getElementById("round1").innerHTML = round;
+                document.getElementById("round2").innerHTML = round;*/
+            }
+            else {
+                document.getElementById("treatment").innerHTML = "A";
+                document.getElementById("treatment2").innerHTML = "A";
+                document.title = "Part A";
+                /*document.getElementById("round1").innerHTML = round-1;
+                document.getElementById("round2").innerHTML = round-1;*/
+            }
+        });
+    </script>
+
+{% endblock %}
+{% block title %}
+    Part <span id="treatment">I</span>
+{% endblock %}
+
+{%  block content %}
+    <p><span id="thanks"></span></p>
+    <p>In the following we ask you to make your decisions for Part <span id="treatment2"> B </span>. Recall that this part consists of only one round. Click the 'Instructions' button if you would like to double check the instructions.
+        </p>
+    <div style="float: right;display:inline-block;">
+            <button type="button" onclick="toggleInstructions()" class="btn btn-default" id="instructionButton">Instructions</button>
+    </div>
+    <div style="float: right;">
+        {% next_button %}
+    </div>
+    <div id="instructions">
+    {% include Constants.instructions1_template %}
+    </div>
+{% endblock content %}

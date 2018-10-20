@@ -1,0 +1,205 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    .formfield{
+        text-align: left;
+        margin-left: 0em;
+        margin-inside: auto;
+        display: block;
+        width: 30em;
+    }
+    .wrapper {
+        width: 80%; /* Width of the outside container */
+        text-align: center;
+        margin: auto;
+        display: block;
+    }
+    #instructions{
+        display: none;
+        width: 100%;
+        border: none;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+        float: right
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #FFFFFF; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+        .slider::-webkit-slider-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+    .slider::-moz-range-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+    .results {
+        width: 100%;
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+
+    <script>
+    var step ={{ multiplier|json }};
+    var endowment = {{ endowment|json }};
+    var slider = document.getElementById('promslider');
+    var promise=$('#id_promise');
+
+    function toggleInstructions() {
+        // get the clock
+        var myClock = document.getElementById('instructions');
+
+        // get the current value of the clock's display property
+        var displaySetting = myClock.style.display;
+
+        // also get the clock button, so we can change what it says
+        var clockButton = document.getElementById('instructionButton');
+
+        // now toggle the clock and the button text, depending on current state
+        if (displaySetting == 'block') {
+          // clock is visible. hide it
+          myClock.style.display = 'none';
+          // change button text
+          clockButton.innerHTML = 'Instructions';
+        }
+        else {
+          // clock is hidden. show it
+          myClock.style.display = 'block';
+          // change button text
+          clockButton.innerHTML = 'Hide';
+        }
+      }
+
+    function page_load(){
+        document.getElementById('promslider').setAttribute('step', 1);
+        document.getElementById('promslider').setAttribute('max', endowment);
+        document.getElementById("current_prom").innerHTML=promise.get(0).value(0);
+        document.getElementById("endowment").innerHTML=endowment;
+    }
+    function update_promise(new_prom){
+        <!-- promise.val(new_prom*step);-->
+        document.getElementById("current_prom").innerHTML=new_prom*step;
+        document.getElementById("current_keep").innerHTML=endowment-new_prom;
+        document.getElementById("endowment").innerHTML=endowment;
+        document.getElementById("send_train").innerHTML=new_prom;
+    }
+    slider.oninput = function() {
+        update_promise(this.value);
+    };
+    $(document).ready(function(){
+        page_load();
+    });
+
+    $(".main-container.collapse").on('shown.bs.collapse', function () {
+    //when a collapsed div is shown hide all other collapsible divs that are visible
+       $(".main-container.collapse").not($(this)).collapse('hide');
+    });
+    </script>
+
+{% endblock %}
+{% block title %}
+    Promise
+{% endblock %}
+
+{%  block content %}
+<p><b>Please make a <i>promise</i> to the receiver regarding the amount of points you will send if he or she chooses you as sender.</b></p>
+    <p> Your promise will be displayed to the receiver when the receiver picks a sender.
+        Remember that you will get an endowment of {{ Constants.endowment }} points in total if the receiver picks you, so you can promise to send any amount between 0 and {{ Constants.endowment }} points. The points you send to the receiver are doubled, which means that the receiver gets twice as many points as you send.
+        Press the <u>help button</u>, if you want to test the effect of different decisions on the amount of points you and the receiver will get. </p>
+    <p><i>Note: On this screen you only decide about the promise displayed to the receiver.</i></p>
+
+<div id="decision_div" class="main-container collapse-in">
+
+<div class="formfield">
+{% formfield player.promise  %}
+</div>
+
+        <div style="float: right;display:inline-block;">
+            <button href="#training_div" class="btn btn-default" type="button" data-toggle="collapse" id="help_btn">Help</button>
+        </div>
+    <div style="float: right;display:inline-block;">
+        {% next_button %}
+    </div>
+    <!-- <input type="hidden" name="promise" value="0" id="id_promise"/> -->
+    <span style="display:block; height: 35pt;"></span>
+
+</div>
+
+    <div class="main-container collapse" id="training_div">
+    <p><i>Below you can test how your decision would affect the amount of points you and the receiver get. Note that this is just a help, the slider-position does not affect the promise you make. </i></p>
+        <div class="wrapper">
+        <p>If you send <span id="send_train">0</span> points,</p>
+        <input type="range" min="0" max="0.1" step="0.01" class="slider" id="promslider">
+        </div>
+    <div style="width: 100%; overflow: hidden;">
+        <div style="width: 20%; float:left; align-content: left; margin-left: 10%; font-size: 0.8em;"><span>0</span></div><div style="float:right; align-content: right; margin-right: 10%; font-size: 0.8em;"><span id="endowment">100</span></div>
+    </div>
+    <div class="results">you will get <span id="current_keep">100</span> points. <span width="10pt"></span>And the receiver will get
+    <span id="current_prom">0</span> points.</div>
+        <span style="display:block; height: 35pt;"></span>
+        <div style="float: right;display:inline-block;">
+            <button type="button" onclick="toggleInstructions()" class="btn btn-default" id="instructionButton">Instructions</button>
+        </div>
+    <div id="instructions">
+    {% include Constants.instructions2_template %}
+    </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock content %}

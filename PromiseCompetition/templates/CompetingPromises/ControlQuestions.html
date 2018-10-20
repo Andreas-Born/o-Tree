@@ -1,0 +1,167 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Control Questions
+{% endblock %}
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    #instructions{
+        display:none;
+        width: 100%;
+        border: none;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+        float: right
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #FFFFFF; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+        .slider::-webkit-slider-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+    .slider::-moz-range-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+    .results {
+        width: 100%;
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+<script>
+
+    var treatment = {{ treatment | json }}
+    function toggleInstructions() {
+        // get the clock
+        var instructions1 = document.getElementById('instructions1');
+        var instructions2 = document.getElementById('instructions2');
+
+        // get the current value of the clock's display property
+        var displaySetting1 = instructions1.style.display;
+        var displaySetting2 = instructions2.style.display;
+
+        // also get the clock button, so we can change what it says
+        var clockButton = document.getElementById('instructionButton');
+
+        // now toggle the clock and the button text, depending on current state
+        if (treatment == 1) {
+            if (displaySetting1 == 'block') {
+                // clock is visible. hide it
+                instructions1.style.display = 'none';
+                // change button text
+                clockButton.innerHTML = 'See Instructions';
+            }
+            else {
+                // clock is hidden. show it
+                instructions1.style.display = 'block';
+                // change button text
+                clockButton.innerHTML = 'Hide';
+            }
+        }
+        else{
+            if (displaySetting2 == 'block') {
+                // clock is visible. hide it
+                instructions2.style.display = 'none';
+                // change button text
+                clockButton.innerHTML = 'See Instructions';
+            }
+            else {
+                // clock is hidden. show it
+                instructions2.style.display = 'block';
+                // change button text
+                clockButton.innerHTML = 'Hide';
+            }
+        }
+      }
+
+</script>
+
+{% endblock %}
+{% block content %}
+    <p>
+    Before starting the experiment, we ask you to answer the following control questions. If you have any questions please raise your hand and an experimenter will come to you!
+    </p>
+    <div>{% formfield player.controlq1 %} </div>
+    <div>{% formfield player.controlq2 %} </div>
+    <div>{% formfield player.controlq3 %} </div>
+    <div>{% formfield player.controlq4 %} </div>
+
+    <span style="display:block; height: 35pt;"></span>
+    <div id="decision_div" class="main-container collapse-in">
+                <div style="float: right;display:inline-block;">
+            <button onclick="toggleInstructions()" class="btn btn-default" type="button" id="instructionButton">Instructions</button>
+        </div>
+        <div style="float: right;display:inline-block;">
+                {% next_button %}
+        </div>
+        <span style="display:block; height: 35pt;"></span>
+    </div>
+    <div class="main-container collapse" id="instructions1">
+        <h1>Part A</h1>
+        {% include Constants.instructions2_template %}
+        <h1>Part B</h1>
+        {% include Constants.instructions1_template %}
+        {% include Constants.instructions3_template %}
+
+
+    </div>
+    <div class="main-container collapse" id="instructions2">
+        <h1>Part A</h1>
+        {% include Constants.instructions1_template %}
+        <h1>Part B</h1>
+        {% include Constants.instructions2_template %}
+        {% include Constants.instructions3_template %}
+    </div>
+{% endblock %}

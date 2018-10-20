@@ -1,0 +1,108 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    .formfield{
+        text-align: left;
+        margin-left: 0em;
+        margin-inside: auto;
+        display: block;
+        width: 30em;
+    }
+    .wrapper {
+        width: 80%; /* Width of the outside container */
+        text-align: center;
+        margin: auto;
+        display: block;
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #FFFFFF; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+        .slider::-webkit-slider-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #000000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+    .slider::-moz-range-thumb:hover {
+        width: 30px; /* Set a specific slider handle width */
+        height: 30px; /* Slider handle height */
+    }
+    .results {
+        width: 100%;
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+<script>
+
+
+
+</script>
+
+{% endblock %}
+
+
+{% block title %}
+    Questionnaire
+{% endblock %}
+{% block content %}
+
+    <p>
+    The experiment is almost over, concluding the experiment, we would like to ask you a few questions about you and how you made your decisions.
+    </p>
+    <div>{% formfield player.question1 %} </div>
+    <div>{% formfield player.question2 %} </div>
+    <div>{% formfield player.question3 %} </div>
+    <div>{% formfield player.question4 %} </div>
+    <div>{% formfield player.question5 %} </div>
+    <div>{% formfield player.question6 %} </div>
+{% next_button %}
+{% endblock %}

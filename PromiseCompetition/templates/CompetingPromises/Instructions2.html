@@ -1,0 +1,25 @@
+{% load otree staticfiles %}
+
+<div class="card bg-light instructions">
+    <div class="card-body">
+
+        <p>This part of the study consists of ten rounds. In <i>each round</i> you will be matched with two random participants. In the end of each round, participants who were in the same group will see each other's decisions (explained in detail below).
+        </p>
+        <h5>Sender and Receiver</h5>
+    <p>
+         In each group one participant will take the role of a receiver and two participants will be senders.<br>
+        As the <i>receiver</i> you will be able to choose one of the two <i>senders</i>. The <i>chosen sender</i> will be endowed with  {{ Constants.endowment }} points.
+        The sender will then be able to decide how he or she wants to distribute the points between her-/himself and the receiver. The number of points the sender sends to the receiver is doubled.
+    </p>
+        <p>At the end of this part, the computer will randomly assign two group members the role a sender and one group member the role of a receiver. However, you do not know which role you will finally be assigned when you make your decisions. Therefore, <i>the computer will ask you for both, your decisions as sender AND as receiver.</i> </p>
+          <h5>Promises</h5>
+    <p> Before the receiver decides who to choose, each sender will be asked to promise how many points he or she will give to the receiver. The receiver will be displayed this promise when making his or her choice.
+    </p>
+        <p>In a separate step each sender will be asked to decide how to distribute the 100 points between him- or herself and the receiver in case the receiver selects him/her as sender. </p>
+        <h5>Your Role</h5>
+        <p>
+        After all group members entered their decisions, the computer will randomly determine the actual role of each group member. The computer will automatically implement your decisions for the role you are assigned. All group member will be displayed the promises of the senders, the selection choice of the receiver, and the distribution choice of the selected sender.
+    </p>
+    </div>
+</div>
+

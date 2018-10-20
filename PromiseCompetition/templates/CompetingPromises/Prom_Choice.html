@@ -1,0 +1,79 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    Receiver Decision
+{% endblock %}
+{%  block scripts %}
+    <script>
+    var own_id = parseInt({{ own_id|json }});
+    var promise1 = {{ promise1|json }};
+    var promise2 = {{ promise2|json }};
+    var promise3 = {{ promise3|json }};
+    var choice2 = $('#id_choice2');
+    var choice1 = $('#id_choice1');
+
+    function label_table(){
+        if (own_id!==1){
+            document.getElementById("p1").innerHTML = promise1;
+            choice1.val(1);
+            if(own_id!==2){
+               document.getElementById("p2").innerHTML = promise2;
+               choice2.val(2);
+            }
+            else{
+                document.getElementById("p2").innerHTML = promise3;
+                choice2.val(3);
+            }
+        }
+        else{
+            document.getElementById("p1").innerHTML = promise2;
+            document.getElementById("p2").innerHTML = promise3;
+            choice1.val(2);
+            choice2.val(3);
+        }
+    }
+    $( document ).ready(function() {
+        setTimeout(label_table, 50);
+    });
+
+       //setInterval( increment_recording, 100/tick_speed);
+    </script>
+{%  endblock %}
+
+
+{% block content %}
+  Please make your decision for the case that the computer determines you as the receiver this round. Below you see the promises of both other participants in your group.
+    Remember that each participant can split an amount of 100 points in total. Indicate below which participant you would like to select as sender.
+
+    <table class="table-condensed" style="width:500px; margin-top:20px;">
+        <tr><td><i>Sender</i></td><td><i>Promise</i></td><td></td></tr>
+        <tr><td></td><td></td></tr>
+        <tr><td>Participant A</td><td><div id="p1">0</div><span style="display:block; width: 20pt;"></td><td><span style="display:block; width: 20pt;"></span><button name="choice" value="1" id="id_choice1" class="btn">Choose</button></td></tr>
+        <tr><td> </td><td> </td></tr>
+        <tr><td>Participant B</td><td><span id="p2">0</span><span style="display:block; width: 20pt;"></td><td><span style="display:block; width: 20pt;"></span><button name="choice" id="id_choice2" value="2" class="btn">Choose</button></td></tr>
+        <tr><td> </td><td> </td></tr>
+
+    </table>
+    <p></p>
+
+
+{% endblock %}

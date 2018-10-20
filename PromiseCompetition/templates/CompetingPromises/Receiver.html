@@ -1,0 +1,39 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    Receiver Decision
+{% endblock %}
+{%  block scripts %}
+    <script>
+
+    </script>
+{%  endblock %}
+
+
+
+{% block content %}
+    <p>In the following we ask you to make your receiver-decision for round {{ round }}. The decision will be applied if the computer assigns you the role of a receiver in the end of this round. </p>
+    On the next page you will see the promises of your group members and be able to choose who you would rather choose as sender and endow with
+    {{ constants.endowment }} points.</p>
+
+    {% next_button  %}
+{% endblock %}

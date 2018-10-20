@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    Thanks for your participation!
+{% endblock %}
+
+{% block content %}
+
+    <p>
+    The experiment is now over.
+    </p>
+    <p>
+    Round {{ pay_round }} has been chosen for payment, in total you earned {{ you_earn }}. Please remain seated until your seat-number is called up.
+    </p>
+    {% next_button %}
+
+{% endblock %}

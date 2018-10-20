@@ -1,0 +1,120 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{%  block scripts %}
+     <script>
+    var own_id = {{ own_id|json }};
+    var receiver = {{ receiver|json }};
+    var contribution1 = {{ contribution1|json }};
+    var contribution2 = {{ contribution2|json }};
+    var contribution3 = {{ contribution3|json }};
+    var endowment = {{ endowment|json }};
+    var multiplier = {{ multiplier|json }};
+    var id_chosen;
+    var treatment = {{ treatment|json }};
+    var roundpay = {{ round_pay|json }};
+
+    function set_contribution_id(){
+        if (receiver === 1){
+            id_chosen = own_id % 3 + 1;
+        }
+        else{
+            id_chosen = own_id;
+        }
+    }
+
+    function contribution(id){
+            if (id === 1){
+                return contribution1;
+            }
+            else{
+                if (id === 2){
+                    return contribution2;
+                }
+                else {
+                    return contribution3;
+                }
+
+            }
+    }
+    function label_table() {
+        set_contribution_id();
+        document.getElementById("contribution").innerHTML = contribution(id_chosen);
+
+        if (receiver === 1){
+            receiver = "you";
+            document.getElementById("role_id").innerHTML="Receiver";
+            senderA = "your group member";
+            document.getElementById("earn").innerHTML = contribution(id_chosen) * multiplier;
+
+        }
+        else{
+            document.getElementById("role_id").innerHTML="Sender";
+            senderA = "you";
+            receiver = "your group member";
+            document.getElementById("earn").innerHTML = endowment - contribution(id_chosen);
+        }
+
+
+        document.getElementById("sender").innerHTML=senderA;
+        document.getElementById("sender2").innerHTML=senderA;
+        document.getElementById("receiver1").innerHTML=receiver;
+        document.getElementById("pay").innerHTML =  "You earned " + roundpay +" points.";
+    }
+    $( document ).ready(function() {
+        if (treatment===1){
+            document.title = "Results of Part B";
+            document.getElementById("titlespan").innerHTML = "B";
+        }
+        else{
+            document.title = "Results of Part A";
+            document.getElementById("titlespan").innerHTML = "A";
+            document.getElementById("explanation").innerHTML = "Here you can see the results of Part A which you did in the beginning of the experiment."
+        }
+        label_table();
+    });
+     </script>
+{% endblock %}
+
+
+{% block title %}
+    Results of Part <span id="titlespan">A</span>
+{% endblock %}
+
+{% block content %}
+    <p><span id="explanation"></span></p>
+  <p>
+  The computer assigned you the role as <b><span id="role_id">Receiver</span></b>. <span id="pay"></span>
+  </p>
+
+    <table class="table-condensed" style="width:500px; margin-top:20px;">
+        <tr><td> </td><td>  </td></tr>
+        <tr><td><span id="sender">The sender</span> sent</td><td><span id="contribution">000</span> points to <span id="receiver1">the receiver</span></td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td><i>As a result you earned</i> </td><td> <span id="earn">000</span> points. </td></tr>
+        <tr><td></td><td></td></tr>
+    </table>
+    <p></p>
+    {% next_button %}
+
+
+
+
+{% endblock %}

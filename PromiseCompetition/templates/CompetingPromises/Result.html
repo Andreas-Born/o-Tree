@@ -1,0 +1,154 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{%  block scripts %}
+     <script>
+    var own_id = {{ own_id|json }};
+    var prom_chosen = {{ prom_chosen|json }};
+    var prom_not_chosen = {{ prom_not_chosen| json }};
+    var id_chosen = {{ choice|json }};
+    var id_receiver = {{ receiver|json }};
+    var contribution1 = {{ contribution1|json }};
+    var contribution2 = {{ contribution2|json }};
+    var contribution3 = {{ contribution3|json }};
+    var endowment = {{ endowment|json }};
+    var multiplier = {{ multiplier|json }};
+    var promise_1 = {{ promise1|json }};
+    var promise_2 = {{ promise2|json }};
+    var promise_3 = {{ promise3|json }};
+    var senderA = "Sender A";
+    var senderB = "Sender B";
+    var receiver = "The receiver";
+    var treatment = {{ treatment|json }};
+    var roundpay = {{ round_pay|json }};
+
+    function contribution(id){
+            if (id === 1){
+                return contribution1;
+            }
+            else{
+                if (id === 2){
+                    return contribution2;
+                }
+                else {
+                    return contribution3;
+                }
+
+            }
+    }
+    function label_table() {
+        document.getElementById("sender_earn").innerHTML = endowment - contribution(id_chosen);
+        document.getElementById("receiver_earn").innerHTML = contribution(id_chosen) * multiplier;
+        document.getElementById("contribution").innerHTML = contribution(id_chosen);
+
+        if (own_id === id_receiver){
+            receiver = "You";
+            document.getElementById("role_id").innerHTML="Receiver";
+        }
+        else{
+            document.getElementById("role_id").innerHTML="Sender";
+
+            if (own_id === 1 || (own_id === 2 && id_receiver === 1)){
+                senderA = "You";
+            }
+            else {
+                senderB = "You";
+            }
+        }
+
+        if (id_receiver === 3){
+            document.getElementById("promise_1").innerHTML=promise_1;
+            document.getElementById("promise_2").innerHTML=promise_2;
+        }
+        else{
+            if(id_receiver === 2){
+                document.getElementById("promise_1").innerHTML=promise_1;
+                document.getElementById("promise_2").innerHTML=promise_3;
+            }
+            else{
+                document.getElementById("promise_1").innerHTML=promise_2;
+                document.getElementById("promise_2").innerHTML=promise_3;
+            }
+        }
+
+        if (id_chosen === 1 || (id_chosen === 2 && id_receiver === 1)){
+            sender_chosen = senderA;
+            sender_notchosen = senderB;
+        }
+        else{
+            sender_chosen = senderB;
+            sender_notchosen = senderA;
+
+        }
+        document.getElementById("first_sender").innerHTML=senderA;
+        document.getElementById("second_sender").innerHTML=senderB;
+        document.getElementById("receiver1").innerHTML=receiver;
+        document.getElementById("receiver2").innerHTML=receiver;
+        document.getElementById("sender_chosen1").innerHTML=sender_chosen;
+        document.getElementById("sender_chosen2").innerHTML=sender_chosen;
+        document.getElementById("sender_chosen3").innerHTML=sender_chosen;
+        document.getElementById("sender_notchosen").innerHTML=sender_notchosen;
+        document.getElementById("pay").innerHTML =  "You earned " + roundpay +" points.";
+
+    }
+    $(document).ready(function(){
+        label_table();
+        if (treatment===1){
+            document.title = "Results of Part A";
+            document.getElementById("titlespan").innerHTML = "of Part A";
+        }
+        else{
+            document.title = "Results of Part B";
+            document.getElementById("titlespan").innerHTML = "of Part B";
+        }
+    });
+     </script>
+{% endblock %}
+
+
+{% block title %}
+    Results of round {{ round }} <span id="titlespan"></span>
+{% endblock %}
+
+{% block content %}
+  <p>
+  The computer assigned you the role as <b><span id="role_id">Receiver</span></b>. <span id="pay"></span>
+  </p>
+
+    <table class="table-condensed" style="width:500px; margin-top:20px;">
+        <tr><td> </td><td>  </td></tr>
+        <tr><td><span id="first_sender">Sender A</span> promised</td><td><span id="promise_1">000</span> points</td></tr>
+        <tr><td><span id="second_sender">Sender B</span> promised</td><td><span id="promise_2">000</span> points</td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td><span id="receiver1">The receiver</span> chose</td><td><span id="sender_chosen1">Sender A  </span></td></tr>
+        <tr><td><span id="sender_chosen2">The chosen sender</span> sent</td><td><span id="contribution">0000 </span> points</td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td><i>The resulting earnings are as follows</i> </td><td>  </td></tr>
+        <tr><td><span id="receiver2">The receiver</span> earned</td><td> <span id="receiver_earn">000</span> points</td></tr>
+        <tr><td><span id="sender_chosen3">The chosen sender</span> earned</td><td><span id="sender_earn">000</span> points</td></tr>
+        <tr><td><span id="sender_notchosen">The other sender</span> earned</td><td>0 points</td></tr>
+    </table>
+    <p></p>
+    {% next_button %}
+
+
+
+
+{% endblock %}

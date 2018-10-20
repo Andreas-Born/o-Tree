@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% block styles %}
+
+    <style type="text/css">
+    .btn {
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        padding: auto;
+        border-radius: 5px;
+    }
+    .btn:hover{
+        border: #212121;
+        background-color: #4CAF50; /* Green */
+        color: white;
+
+    }
+    </style>
+{% endblock %}
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+    <h1>Part A</h1>
+    {% include Constants.instructions1_template %}
+
+
+    <h1>Part B</h1>
+    {% include Constants.instructions2_template %}
+
+    {% next_button %}
+
+{% endblock %}
