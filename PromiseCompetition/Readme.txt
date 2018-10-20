@@ -1,2 +1,2 @@
 This code bases on the experiment I ran for my project 'Promise Competition'. See https://www.andreas-born.com/promise_competition_jmp.pdf for more info. 
-Note that I changed the code a bit since I ran the experiment to make it simpler and haven't extensively tested it since.
+Note that I changed a few things since I ran the experiment.
